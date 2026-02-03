@@ -4,6 +4,116 @@
       "website_update_time": "20260203 11:15:00",
       "fetch_time": "20260203 14:26:30",
       "hibor_value": 2.519942
+    },
+	{
+      "website_update_time": "20260202 11:15:00",
+      "fetch_time": "20260202 23:59:59",
+      "hibor_value": 2.53363
+    },
+    {
+      "website_update_time": "20260130 11:15:00",
+      "fetch_time": "20260130 23:59:59",
+      "hibor_value": 2.61357
+    },
+    {
+      "website_update_time": "20260129 11:15:00",
+      "fetch_time": "20260129 23:59:59",
+      "hibor_value": 2.65
+    },
+    {
+      "website_update_time": "20260128 11:15:00",
+      "fetch_time": "20260128 23:59:59",
+      "hibor_value": 2.66321
+    },
+    {
+      "website_update_time": "20260127 11:15:00",
+      "fetch_time": "20260127 23:59:59",
+      "hibor_value": 2.74571
+    },
+    {
+      "website_update_time": "20260126 11:15:00",
+      "fetch_time": "20260126 23:59:59",
+      "hibor_value": 2.78167
+    },
+    {
+      "website_update_time": "20260123 11:15:00",
+      "fetch_time": "20260123 23:59:59",
+      "hibor_value": 2.79292
+    },
+    {
+      "website_update_time": "20260122 11:15:00",
+      "fetch_time": "20260122 23:59:59",
+      "hibor_value": 2.80405
+    },
+    {
+      "website_update_time": "20260121 11:15:00",
+      "fetch_time": "20260121 23:59:59",
+      "hibor_value": 2.72893
+    },
+    {
+      "website_update_time": "20260120 11:15:00",
+      "fetch_time": "20260120 23:59:59",
+      "hibor_value": 2.75923
+    },
+    {
+      "website_update_time": "20260119 11:15:00",
+      "fetch_time": "20260119 23:59:59",
+      "hibor_value": 2.77673
+    },
+    {
+      "website_update_time": "20260116 11:15:00",
+      "fetch_time": "20260116 23:59:59",
+      "hibor_value": 2.84095
+    },
+    {
+      "website_update_time": "20260115 11:15:00",
+      "fetch_time": "20260115 23:59:59",
+      "hibor_value": 2.84857
+    },
+    {
+      "website_update_time": "20260114 11:15:00",
+      "fetch_time": "20260114 23:59:59",
+      "hibor_value": 2.64786
+    },
+    {
+      "website_update_time": "20260113 11:15:00",
+      "fetch_time": "20260113 23:59:59",
+      "hibor_value": 2.69
+    },
+    {
+      "website_update_time": "20260112 11:15:00",
+      "fetch_time": "20260112 23:59:59",
+      "hibor_value": 2.83881
+    },
+    {
+      "website_update_time": "20260109 11:15:00",
+      "fetch_time": "20260109 23:59:59",
+      "hibor_value": 2.86369
+    },
+    {
+      "website_update_time": "20260108 11:15:00",
+      "fetch_time": "20260108 23:59:59",
+      "hibor_value": 3.00798
+    },
+    {
+      "website_update_time": "20260107 11:15:00",
+      "fetch_time": "20260107 23:59:59",
+      "hibor_value": 2.95518
+    },
+    {
+      "website_update_time": "20260106 11:15:00",
+      "fetch_time": "20260106 23:59:59",
+      "hibor_value": 2.97869
+    },
+    {
+      "website_update_time": "20260105 11:15:00",
+      "fetch_time": "20260105 23:59:59",
+      "hibor_value": 2.67226
+    },
+    {
+      "website_update_time": "20260102 11:15:00",
+      "fetch_time": "20260102 23:59:59",
+      "hibor_value": 2.6225
     }
   ]
 }
