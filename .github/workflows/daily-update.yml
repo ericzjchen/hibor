@@ -2,16 +2,16 @@ name: HIBOR Data Update
 
 on:
   schedule:
-    # 每天11:00-18:00，每30分鐘執行一次 (香港時間)
-    - cron: '0,30 3-10 * * *'  # UTC時間 03:00-10:30 (香港時間 11:00-18:30)
-  
+    - cron: '0,30 3-10 * * *'  # 11:00-18:30 HKT，每30分鐘
   workflow_dispatch:
-  
   push:
     branches: [ main ]
 
 env:
   TZ: Asia/Hong_Kong
+
+permissions:
+  contents: write
 
 jobs:
   update-hibor:
@@ -32,26 +32,51 @@ jobs:
       run: |
         pip install selenium beautifulsoup4 requests
         
-    - name: Install Chrome and ChromeDriver
+    - name: Install Chrome and ChromeDriver (Fixed Version)
       run: |
         sudo apt-get update
         sudo apt-get install -y wget unzip
         
-        # 安裝 Chrome
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        # 方法1：安裝指定版本的Chrome（推薦）
+        echo "📦 Installing specific Chrome version..."
+        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -fy
+        CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+        echo "✅ Chrome version: $CHROME_VERSION"
         
-        # 自動匹配版本的 ChromeDriver
-        LATEST_CHROMEDRIVER=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-        wget -q "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
-        rm chromedriver_linux64.zip
+        # 方法2：獲取對應的ChromeDriver版本
+        echo "🔧 Installing matching ChromeDriver..."
+        # 提取Chrome主版本號
+        CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d'.' -f1)
+        echo "Chrome major version: $CHROME_MAJOR_VERSION"
         
-    - name: Run HKAB HIBOR update
+        # 下載對應版本的ChromeDriver
+        CHROMEDRIVER_URL="https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION/linux64/chromedriver-linux64.zip"
+        echo "Downloading ChromeDriver from: $CHROMEDRIVER_URL"
+        
+        # 嘗試從新API獲取
+        wget -q "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json" -O versions.json
+        LATEST_STABLE=$(python3 -c "import json; data=json.load(open('versions.json')); print(data['channels']['Stable']['version'])")
+        echo "Latest stable Chrome version: $LATEST_STABLE"
+        
+        # 下載對應的ChromeDriver
+        wget -q "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$LATEST_STABLE/linux64/chromedriver-linux64.zip"
+        
+        if [ -f "chromedriver-linux64.zip" ]; then
+          unzip -o chromedriver-linux64.zip
+          sudo mv chrome-for-testing/$LATEST_STABLE/linux64/chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          rm -rf chrome-for-testing chromedriver-linux64.zip
+          echo "✅ ChromeDriver installed"
+        else
+          # 備用方案：使用webdriver-manager
+          echo "🔄 Using webdriver-manager as fallback..."
+          pip install webdriver-manager
+        fi
+        
+        chromedriver --version
+        
+    - name: Run HKAB HIBOR update (no browser needed)
       run: |
         echo "🕐 $(date)"
         echo "🚀 Running HKAB HIBOR update..."
@@ -62,6 +87,8 @@ jobs:
       run: |
         echo "🕐 $(date)"
         echo "🚀 Running HSBC HIBOR update..."
+        # 添加環境變量確保Selenium能找到ChromeDriver
+        export PATH=$PATH:/usr/local/bin
         python scripts/update_hsbc_hibor.py
         echo "✅ HSBC update completed"
         
@@ -69,15 +96,16 @@ jobs:
       run: |
         echo "🕐 $(date)"
         echo "🚀 Running Hang Seng HIBOR update..."
+        export PATH=$PATH:/usr/local/bin
         python scripts/update_hase_hibor.py
         echo "✅ Hang Seng update completed"
         
     - name: Commit and push changes
       run: |
         git config --local user.email "ericzjchen@gmail.com"
-        git config --local user.name "ericzjchen"
+        git config --local user.name "GitHub Actions"
         
-        # 檢查是否有文件變化
+        # 檢查文件變化
         git add api/hase_hibor.json api/hkab_hibor.json api/hsbc_hibor.json
         
         if git diff --staged --quiet; then
