@@ -1,0 +1,89 @@
+name: HIBOR Data Update
+
+on:
+  schedule:
+    # 每天11:00-18:00，每30分鐘執行一次 (香港時間)
+    - cron: '0,30 3-10 * * *'  # UTC時間 03:00-10:30 (香港時間 11:00-18:30)
+  
+  workflow_dispatch:
+  
+  push:
+    branches: [ main ]
+
+env:
+  TZ: Asia/Hong_Kong
+
+jobs:
+  update-hibor:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        pip install selenium beautifulsoup4 requests
+        
+    - name: Install Chrome and ChromeDriver
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        
+        # 安裝 Chrome
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        
+        # 自動匹配版本的 ChromeDriver
+        LATEST_CHROMEDRIVER=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+        wget -q "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
+        rm chromedriver_linux64.zip
+        
+    - name: Run HKAB HIBOR update
+      run: |
+        echo "🕐 $(date)"
+        echo "🚀 Running HKAB HIBOR update..."
+        python scripts/update_hkab_hibor.py
+        echo "✅ HKAB update completed"
+        
+    - name: Run HSBC HIBOR update
+      run: |
+        echo "🕐 $(date)"
+        echo "🚀 Running HSBC HIBOR update..."
+        python scripts/update_hsbc_hibor.py
+        echo "✅ HSBC update completed"
+        
+    - name: Run Hang Seng HIBOR update
+      run: |
+        echo "🕐 $(date)"
+        echo "🚀 Running Hang Seng HIBOR update..."
+        python scripts/update_hase_hibor.py
+        echo "✅ Hang Seng update completed"
+        
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "ericzjchen@gmail.com"
+        git config --local user.name "ericzjchen"
+        
+        # 檢查是否有文件變化
+        git add api/hase_hibor.json api/hkab_hibor.json api/hsbc_hibor.json
+        
+        if git diff --staged --quiet; then
+          echo "🤷 No changes to commit"
+        else
+          git commit -m "🤖 Auto-update HIBOR data at $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ Changes committed and pushed"
+        fi
