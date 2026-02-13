@@ -23,6 +23,12 @@ jobs:
       with:
         token: ${{ secrets.PAT_TOKEN }}
         
+    - name: Debug token (安全验证)
+      run: |
+        echo "Token length: ${{ secrets.PAT_TOKEN != '' && '✓ Token exists' || '✗ Token missing' }}"
+        echo "Token starts with: ${{ secrets.PAT_TOKEN != '' && secrets.PAT_TOKEN != secrets.GITHUB_TOKEN && '✓ Custom token' || '✗ Check token' }}"
+        git remote -v    
+        
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
