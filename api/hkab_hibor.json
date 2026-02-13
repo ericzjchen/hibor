@@ -114,6 +114,31 @@
       "website_update_time": "20260203 11:15:00",
       "fetch_time": "20260203 14:26:30",
       "hibor_value": 2.519942
+    },
+    {
+      "website_update_time": "20260204 11:15:00",
+      "fetch_time": "20260204 12:28:59",
+      "hibor_value": 2.494352
+    },
+    {
+      "website_update_time": "20260205 11:15:00",
+      "fetch_time": "20260205 12:43:06",
+      "hibor_value": 2.594522
+    },
+    {
+      "website_update_time": "20260206 11:15:00",
+      "fetch_time": "20260206 12:42:18",
+      "hibor_value": 2.588152
+    },
+    {
+      "website_update_time": "20260209 11:15:00",
+      "fetch_time": "20260209 12:54:40",
+      "hibor_value": 2.550002
+    },
+    {
+      "website_update_time": "20260210 11:15:00",
+      "fetch_time": "20260210 12:57:56",
+      "hibor_value": 2.504462
     }
   ]
 }
