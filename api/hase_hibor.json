@@ -199,6 +199,11 @@
       "website_update_time": "20260220 11:00:00",
       "fetch_time": "20260220 12:31:17",
       "hibor_value": 2.4
+    },
+    {
+      "website_update_time": "20260220 11:00:00",
+      "fetch_time": "20260220 13:46:22",
+      "hibor_value": 2.45
     }
   ]
 }
