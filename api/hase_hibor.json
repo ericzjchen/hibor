@@ -1,11 +1,6 @@
 {
   "records": [
     {
-      "website_update_time": "20260204 11:00:00",
-      "fetch_time": "20260204 12:29:25",
-      "hibor_value": 2.5
-    },
-    {
       "website_update_time": "20260205 11:00:00",
       "fetch_time": "20260205 12:43:29",
       "hibor_value": 2.6
@@ -998,6 +993,11 @@
     {
       "website_update_time": "20260822 11:00:00",
       "fetch_time": "20260822 11:33:50",
+      "hibor_value": 2.69
+    },
+    {
+      "website_update_time": "20260823 11:00:00",
+      "fetch_time": "20260823 11:41:17",
       "hibor_value": 2.69
     }
   ]
