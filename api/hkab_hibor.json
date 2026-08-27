@@ -794,6 +794,11 @@
       "website_update_time": "20260826 11:15:00",
       "fetch_time": "20260826 11:43:28",
       "hibor_value": 2.794112
+    },
+    {
+      "website_update_time": "20260827 11:15:00",
+      "fetch_time": "20260827 21:18:50",
+      "hibor_value": 2.788212
     }
   ]
 }
